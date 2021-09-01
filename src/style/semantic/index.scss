@@ -1,0 +1,43 @@
+@import './gen-class.scss';
+// 超出省略号
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ie盒子
+.ie-box {
+  box-sizing: border-box;
+}
+
+// 圆形
+.border-circle {
+  border-radius: 50%;
+}
+
+.border-none {
+  border: none;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.vh-100 {
+  height: 100vh;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.h100 {
+  height: 100%;
+}
+
+.abs-center {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
