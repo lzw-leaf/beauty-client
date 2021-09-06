@@ -1,5 +1,6 @@
-<svg viewBox="0 0 100 80" version="1.1" width="inherit" baseProfile="full"
+<svg viewBox="0 0 100 106" version="1.1" width="inherit" baseProfile="full"
   xmlns="http://www.w3.org/2000/svg">
-
-  <polygon points="100 0, 100 80,0 80,0 20" fill="#fff" />
+  <path d="M0,0, V 42,L 70 0 Z" fill="#FE8F98" />
+  <path d="M70 0 C60 4, 60 2, 38 8 S 21 35, 0 41,V 84 C20 104,50 104, 60 84,L 100 20,V 0, Z" fill="#834976"/>
+  <path d="M100 20 C90 38, 60 36,60 84 C80 100, 90 106,100 105 Z" fill="#E2D779"/>
 </svg>

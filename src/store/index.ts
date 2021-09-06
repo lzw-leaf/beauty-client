@@ -1,11 +1,4 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import {getModule} from 'vuex-module-decorators'
+import {BaseStore} from './modules/BaseStore'
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {},
-});
+export const baseStore = getModule(BaseStore)

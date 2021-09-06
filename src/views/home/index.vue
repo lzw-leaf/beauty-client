@@ -1,45 +1,74 @@
 <template>
-  <v-app>
-    <v-app-bar app
-      color="primary"
-      dark>
-      <div class="d-flex align-center">
-        <v-img alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40" />
-
-        <v-img alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100" />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text>
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-    <v-main>
-      <router-view />
+  <div class="home fill-height">
+    <v-main class="home__main fill-height">
+      <router-view></router-view>
     </v-main>
-  </v-app>
+    <v-bottom-navigation v-model="currentTab"
+      :background-color="currentTabColor"
+      dark
+      shift
+      app
+      grow
+      @change="onTabChange">
+      <v-btn v-for="tab of tabList"
+        :key="tab.value"
+        :value="tab.value">
+        <span>{{tab.label}}</span>
+        <v-icon>{{tab.icon}}</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
+  </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
 
-@Component
-export default class Home extends Vue {}
+@Component({
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (to.name !== 'home') {
+        ;(vm as Home).currentTab = to.name!
+      }
+    })
+  }
+})
+export default class Home extends Vue {
+  currentTab = 'customerManage'
+  tabList = [
+    {
+      label: '统计',
+      icon: 'assessment',
+      value: 'statistics',
+      bgColor: 'deep-purple'
+    },
+    {
+      label: '客户管理',
+      icon: 'people',
+      value: 'customerManage',
+      bgColor: 'blue accent-3'
+    },
+    {
+      label: '消费管理',
+      icon: 'credit_card',
+      value: 'costManage',
+      bgColor: 'pink lighten-2'
+    }
+  ]
+
+  get currentTabColor() {
+    const tabInfo = this.tabList.find(item => item.value === this.currentTab)
+    return tabInfo ? tabInfo.bgColor : 'light-blue'
+  }
+  onTabChange() {
+    this.$router.push({name: this.currentTab})
+  }
+}
 </script>
 
 <style lang="scss" scoped>
+.home {
+  &__main {
+  }
+}
 </style>
+
