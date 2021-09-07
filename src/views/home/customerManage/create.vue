@@ -5,7 +5,7 @@
       <v-card class="mx-auto">
         <v-card-subtitle>基础信息</v-card-subtitle>
         <v-text-field class="form__cell"
-          v-model="form.name"
+          v-model="form.customerName"
           solo
           flat
           filled
@@ -44,7 +44,7 @@
         </v-text-field>
         <v-text-field class="form__cell"
           type="number"
-          v-model="form.phone"
+          v-model="form.phoneNum"
           placeholder="请填写"
           solo
           flat
@@ -180,9 +180,10 @@ import {Component, Vue} from 'vue-property-decorator'
 @Component
 export default class CreateCustomer extends Vue {
   form = {
-    name: '',
-    phone: '',
+    customerName: '',
+    phoneNum: '',
     age: '',
+    address: '',
     gender: 1,
     skinType: '',
     skinCondition: '',
