@@ -7,8 +7,8 @@ module.exports = {
       //   pathRewrite: {'^/api': ''}
       // }
       '/api/': {
-        target: 'http://47.96.86.239:8080/',
-        pathRewrite: {'^/api': '/beatuy'}
+        target: 'http://beauty.anshuye.cn/',
+        pathRewrite: {'^/api': '/beauty'}
       }
     }
   }
