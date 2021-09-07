@@ -1,13 +1,16 @@
 <template>
   <div class="login white h100">
     <v-img class="login__banner"
+      position="center bottom"
+      max-height="50vh"
       src="~@/assets/login/prospect.svg">
     </v-img>
     <div class="login__slogan white--text text-h4 font-weight-bold">Welcome Back</div>
     <v-form ref="loginForm"
-      class="login__form px-10 mt-3 font-weight-bold"
+      class="login__form px-10  font-weight-bold"
       v-model="formValid">
-      <v-text-field v-model="form.username"
+      <v-text-field class="pt-0"
+        v-model="form.username"
         color="pink lighten-2"
         height="3.4rem"
         :rules="userNameRules"
@@ -78,7 +81,7 @@ export default class Login extends Vue {
     position: absolute;
     width: 10rem;
     line-height: 3rem;
-    top: 9rem;
+    top: 15vh;
     left: 3rem;
   }
   &__form {
@@ -96,9 +99,9 @@ export default class Login extends Vue {
   &__footer {
     width: 100%;
     position: fixed;
-    bottom: 3.5rem + constant(safe-area-inset-bottom);
-    bottom: 3.5rem + env(safe-area-inset-bottom);
-    bottom: 3.5rem;
+    bottom: 5vh + constant(safe-area-inset-bottom);
+    bottom: 5vh + env(safe-area-inset-bottom);
+    bottom: 5vh;
   }
 }
 </style>

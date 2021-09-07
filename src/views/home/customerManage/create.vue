@@ -214,7 +214,7 @@ export default class CreateCustomer extends Vue {
   async reSaveCustomerInfo() {
     await this.$callApi({
       api: '/customer/save',
-      param: {},
+      param: this.form,
       config: {method: 'POST'}
     })
     this.saving = false
