@@ -25,12 +25,14 @@
       @scroll.native="onListScroll">
       <template #default="{item}">
         <v-card class="list__card mx-4 mt-4"
+          flat
           :key="item.id">
           <v-card-title class="d-flex justify-space-between">
             <div class="font-weight-black"> {{item.customerName}}</div>
             <v-btn class="px-0 font-weight-bold"
               text
-              color="blue accent-3">
+              color="blue accent-3"
+              @click="onDetailClick(item)">
               查看详情
             </v-btn>
           </v-card-title>
@@ -116,6 +118,11 @@ export default class CustomerManage extends Vue {
     this.$router.push({name: 'createCustomer'})
   }
 
+  onDetailClick(item: CustomerInfo) {
+    console.log('跳转详情', item)
+    this.$router.push({name: 'detailCustomer', params: {customerId: item.id}})
+  }
+
   async reFindCustomerList(count?: number) {
     try {
       const {list, total} = await this.$callApi({
@@ -143,6 +150,7 @@ export default class CustomerManage extends Vue {
 .customer-manage {
   .manage__list {
     .list__card {
+      box-shadow: 0px 0px 2px 0px #e5e5e5 !important;
       .v-card__title {
         padding: 10px 16px;
       }

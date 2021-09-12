@@ -36,6 +36,11 @@ const routes: Array<RouteConfig> = [
     path: '/create-customer',
     name: 'createCustomer',
     component: () => import('@/views/home/customerManage/create.vue')
+  },
+  {
+    path: '/detail-customer/:customerId',
+    name: 'detailCustomer',
+    component: () => import('@/views/home/customerManage/detail.vue')
   }
 ]
 

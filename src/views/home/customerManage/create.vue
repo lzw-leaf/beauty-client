@@ -63,6 +63,8 @@
           class="my-2 form__cell"
           :items="skinTypeList"
           placeholder="请选择"
+          item-text="title"
+          item-value="code"
           solo
           hide-details
           flat
@@ -73,7 +75,9 @@
         </v-overflow-btn>
         <v-overflow-btn v-model="form.skinCondition"
           class="my-2 form__cell"
-          :items="skinTypeList"
+          :items="skinStateList"
+          item-text="title"
+          item-value="code"
           placeholder="请选择"
           solo
           hide-details

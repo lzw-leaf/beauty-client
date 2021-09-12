@@ -2,7 +2,7 @@ module.exports = {
   transpileDependencies: ['vuetify'],
   devServer: {
     proxy: {
-      '/api/': 'http://beauty.anshuye.cn'
+      '/api/': {target: 'http://beauty.anshuye.cn'}
     }
   }
 }

@@ -1,6 +1,5 @@
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios'
-import qs from 'qs'
-import {baseStore} from '@/store'
+// import {baseStore} from '@/store'
 
 export interface CallApiConfig {
   api: string
@@ -38,21 +37,21 @@ class CallApi {
    */
   private createAxiosInstance() {
     return axios.create({
-      timeout: 1000 * 15,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      transformRequest: (data: CallApiConfig) => {
-        // todo 后续额外的转换参数可以在此处维护
-        // if (!objectUtils.isVaildObject(data)) return data
-        const {id} = baseStore //从vuex中取值
-        const {param, readonly, async} = data
-        const params = {id, ...param}
-        const project = CallApi.PROGRAM_NAME
-        return qs.stringify({
-          apiparams: JSON.stringify({params, readonly, async, project})
-        })
-      }
+      timeout: 1000 * 15
+      // headers: {
+      //   'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      // },
+      //   transformRequest: (data: CallApiConfig) => {
+      //     // todo 后续额外的转换参数可以在此处维护
+      //     // if (!objectUtils.isVaildObject(data)) return data
+      //     const {id} = baseStore //从vuex中取值
+      //     const {param, readonly, async} = data
+      //     const params = {id, ...param}
+      //     const project = CallApi.PROGRAM_NAME
+      //     return qs.stringify({
+      //       apiparams: JSON.stringify({params, readonly, async, project})
+      //     })
+      //   }
     })
   }
 
@@ -82,10 +81,15 @@ class CallApi {
     const config: AxiosRequestConfig = {
       method: 'get',
       baseURL: this.baseUrl,
-      data: this.apiConfig,
-      params: this.apiConfig.param,
-      ...reqConfig
+      ...reqConfig,
+      ...{
+        [['post', 'POST'].includes('' + reqConfig?.method) ? 'data' : 'params']:
+          this.apiConfig.param
+      }
     }
+
+    console.log('请求参数', config)
+
     return this.instance(api, config) as Promise<T>
   }
 }
