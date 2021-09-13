@@ -76,7 +76,7 @@ class CallApi {
    * @returns
    */
   async request<T extends any>(apiConfig: CallApiConfig) {
-    Object.assign(this.apiConfig, apiConfig)
+    this.apiConfig = apiConfig
     const {api, config: reqConfig} = this.apiConfig
     const config: AxiosRequestConfig = {
       method: 'get',

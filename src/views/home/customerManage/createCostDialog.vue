@@ -1,10 +1,16 @@
 <template>
   <v-bottom-sheet v-model="visibleSync">
     <v-card class="white pa-4">
+      <v-btn class="create__del"
+        text
+        color="red"
+        @click="onDelRecordClick">
+        删除
+      </v-btn>
       <div class="text-h6 text-center pb-4">新增消费记录</div>
       <v-form class="create__form "
         ref="form">
-        <v-card class="mx-auto">
+        <v-card class="form__card mx-auto">
           <v-text-field class="form__cell"
             type="number"
             v-model="form.expense"
@@ -14,21 +20,28 @@
             filled
             hide-details>
             <template #prepend-inner>
-              <div class="cell__label font-weight-bold">消费金额：</div>
+              <div class="font-weight-bold">消费金额：</div>
+            </template>
+            <template #append>
+              <div class="font-weight-bold">元</div>
             </template>
           </v-text-field>
         </v-card>
-        <v-card class="mx-auto my-4">
+        <v-card class="form__card mx-auto my-4">
           <v-card-subtitle class="font-weight-bold">购买产品及赠品</v-card-subtitle>
           <v-textarea v-model="form.product"
             placeholder="请输入"
+            rows="2"
             hide-details
+            dense
             flat
             solo></v-textarea>
           <v-card-subtitle class="font-weight-bold">售后情况</v-card-subtitle>
           <v-textarea v-model="form.afterSale"
             placeholder="请输入"
+            rows="2"
             hide-details
+            dense
             flat
             solo></v-textarea>
         </v-card>
@@ -51,45 +64,81 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, PropSync, Vue} from 'vue-property-decorator'
-
+import {Component, Prop, PropSync, Vue, Watch} from 'vue-property-decorator'
+interface RecordInfo {
+  id?: string
+  color?: string
+  expense: number
+  product: string
+  afterSale: string
+}
 @Component
 export default class CreateCostDialog extends Vue {
   @PropSync('visible') visibleSync!: boolean
   @Prop({default: ''}) customerId!: string
-  form = {expense: 0, product: '', afterSale: ''}
+  @Prop({default: () => ({})}) recordInfo!: RecordInfo
+  form: RecordInfo = {id: '', expense: 0, product: '', afterSale: ''}
   saving = false
-  onSaveClick() {
-    this.saving = true
-    this.reSaveRecordInfo()
+
+  async onDelRecordClick() {
+    const flag = await this.$confirm('确认删除该条记录？', {
+      title: '操作',
+      buttonTrueText: '确定',
+      buttonTrueColor: 'red',
+      buttonFalseText: '取消',
+      color: 'red'
+    })
+    flag && this.reDelRecordInfo()
   }
 
+  onSaveClick() {
+    this.saving = true
+    this.form
+    this.reSaveRecordInfo()
+  }
+  async reDelRecordInfo() {
+    await this.$callApi({
+      api: '/record/delete',
+      param: {recordId: this.form.id},
+      config: {method: 'DELETE'}
+    })
+    this.$message.success('记录删除成功！')
+    this.visibleSync = false
+    this.$emit('operate')
+  }
   async reSaveRecordInfo() {
     await this.$callApi({
       api: '/record/save',
-      param: {
-        afterSale: this.form.afterSale,
-        customerId: this.customerId,
-        expense: this.form.expense,
-        product: this.form.product
-      },
+      param: {customerId: this.customerId, ...this.form},
       config: {method: 'POST'}
     })
     this.saving = false
     this.$message.success('保存成功！')
+    this.visibleSync = false
+    this.$emit('operate')
+  }
+
+  @Watch('visible', {immediate: true})
+  onVisibleSyncChange(value: boolean) {
+    value && (this.form = this.recordInfo)
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.create__del {
+  position: absolute;
+  top: 20px;
+  right: 16px;
+}
 .create__form {
+  .form__card {
+    box-shadow: 0px 0px 10px -2px rgb(0 0 0 / 12%);
+  }
   .form__cell {
     color: #333;
     &.primary--text {
       color: #333 !important;
-    }
-    .cell__label {
-      white-space: nowrap;
     }
 
     ::v-deep {
@@ -98,28 +147,7 @@ export default class CreateCostDialog extends Vue {
         position: relative;
         border: none;
         box-shadow: none;
-        &[role='combobox'] {
-          padding-right: 0;
-          .v-select__selection {
-            order: 2;
-          }
-          input {
-            order: 1;
-          }
-        }
-        &::before {
-          border-color: #e5e5e5 !important;
-          content: '';
-          display: block;
-          position: absolute;
-          width: calc(100% - 24px);
-          margin: 0 12px;
-          bottom: 0;
-          box-sizing: border-box;
-        }
-        &::after {
-          display: none;
-        }
+
         input {
           text-align: right;
         }
@@ -130,9 +158,5 @@ export default class CreateCostDialog extends Vue {
   .form__save {
     width: 100%;
   }
-}
-
-::v-deep .v-card {
-  box-shadow: 0px 0px 10px -2px rgb(0 0 0 / 12%);
 }
 </style>

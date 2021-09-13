@@ -7,6 +7,9 @@ import '@/style/index.scss'
 import vuetify from './plugins/vuetify'
 
 import {callApi} from '@/helper/callApi'
+
+import VuetifyConfirm from 'vuetify-confirm'
+Vue.use(VuetifyConfirm, {vuetify})
 import {VSnackbar, VBtn, VIcon} from 'vuetify/lib'
 Vue.component('v-snackbar', VSnackbar)
 Vue.component('v-btn', VBtn)

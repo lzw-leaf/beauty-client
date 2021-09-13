@@ -4,6 +4,28 @@
       max-width="100%"
       height="40vh"
       src="~@/assets/home/banner.webp"></v-img>
+    <v-menu bottom
+      left>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn class="detail__edit"
+          large
+          absolute
+          icon
+          v-bind="attrs"
+          v-on="on">
+          <v-icon>more_horiz</v-icon>
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item @click="onPushEditClick">
+          <v-list-item-title class="blue--text text--darken-1 font-weight-bold">修改资料</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="onDelCustomerClick">
+          <v-list-item-title class="red--text font-weight-bold">删除</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
     <v-avatar class="detail__avatar text-h5"
       color="primary white--text font-weight-bold"
       size="64">
@@ -11,6 +33,7 @@
     </v-avatar>
     <div class="detail__body rounded-t-xl white d-flex flex-column align-center">
       <div class="body__name text-h5 mt-1 font-weight-bold">{{customerInfo.customerName}}</div>
+
       <div class="body__other d-flex text-center mt-2 text-caption">
         <template v-if="customerInfo.gender">
           <div class="other__gender rounded-pill white--text pink">女</div>
@@ -22,7 +45,7 @@
         </template>
       </div>
       <div class="body__tabs flex-grow-1">
-        <v-tabs class="mt-2 mb-8"
+        <v-tabs class="mt-2"
           fixed-tabs
           v-model="currentTab"
           centered>
@@ -31,14 +54,19 @@
             :href="'#'+tab.value">{{tab.label}}</v-tab>
         </v-tabs>
         <v-tabs-items class="tabs__item"
+          mandatory
           v-model="currentTab">
-          <v-tab-item value="base">
-            <v-card class="tab__card mx-auto pa-4"
+          <v-tab-item class="fill-height"
+            value="base">
+            <v-card class="tab__card mx-auto pa-4 mt-8"
               width="90vw">
               <div class="card__cell d-flex align-center pb-3">
                 <div class="grey--text text--darken-2 cell__label">电话：</div>
                 <div class="flex-grow-1 black-text font-weight-bold pl-2 flex-wrap">{{customerInfo.phoneNum}}</div>
-                <v-icon class="blue--text">call</v-icon>
+                <a :href="`tel:${customerInfo.phoneNum}`"
+                  style="text-decoration: none;">
+                  <v-icon class="blue--text">call</v-icon>
+                </a>
               </div>
               <div class="d-flex align-center pt-3">
                 <div class="cell__label grey--text text--darken-2 text-subtitle-1">住址：</div>
@@ -57,62 +85,71 @@
               </div>
             </v-card>
           </v-tab-item>
-          <v-tab-item value="other">
-            <v-card class="tab__card  mx-auto pa-4"
+          <v-tab-item class="fill-height"
+            value="other">
+            <v-card class="tab__card  mx-auto pa-4 mt-8"
               width="90vw">
               <div class="card__cell d-flex align-center pb-3">
                 <div class="cell__label grey--text text--darken-2">生日：</div>
-                <div class="flex-grow-1 black-text font-weight-bold pl-2">{{customerInfo.birthDay}}</div>
+                <div class="flex-grow-1 black-text font-weight-bold">{{customerInfo.birthDay}}</div>
               </div>
               <div class="d-flex align-center pt-3">
                 <div class="cell__label grey--text text--darken-2 text-subtitle-1">职业：</div>
-                <div class="flex-grow-1 black-text font-weight-bold  pl-2">{{customerInfo.occupation}}</div>
+                <div class="flex-grow-1 black-text font-weight-bold ">{{customerInfo.occupation}}</div>
               </div>
             </v-card>
             <v-card class="tab__card mt-6 mx-auto pa-4"
               width="90vw">
-              <div class="d-flex">
-                <div class="grey--text text--darken-2">过去使用品牌：</div>
-                <div class="flex-grow-1 black-text font-weight-bold pl-2">{{customerInfo.previousProduct}}</div>
-              </div>
+              <div class="grey--text text--darken-2">过去使用品牌</div>
+              <div class="flex-grow-1 black-text mt-2">{{customerInfo.previousProduct}}</div>
             </v-card>
             <v-card class="tab__card mt-6 mx-auto pa-4"
               width="90vw">
-              <div>
-                <div class="grey--text text--darken-2">皮肤描述：</div>
-                <div class="flex-grow-1 black-text mt-2">{{customerInfo.skinDescription}}</div>
-              </div>
+              <div class="grey--text text--darken-2">皮肤描述</div>
+              <div class="flex-grow-1 black-text mt-2">{{customerInfo.skinDescription}}</div>
             </v-card>
           </v-tab-item>
-          <v-tab-item value="cost">
-            <v-timeline class="pr-2"
+          <v-tab-item class="fill-height"
+            value="cost">
+            <v-timeline class="pr-3"
               dense>
               <v-timeline-item class="mb-4"
                 v-for="record of recordList"
                 :key="record.id"
                 :color="record.color"
                 small>
-                <div class="grey--text text--darken-2 text-h6 mb-2">{{record.createTime}}</div>
-                <v-card class="pa-2 ">
-                  <div><span class="grey--text text--darken-3 font-weight-bold">消费金额: </span>{{record.expense}}</div>
-                  <div><span class="grey--text text--darken-3 font-weight-bold">购买产品及赠品: </span>{{record.product}}</div>
-                  <div><span class="grey--text text--darken-3 font-weight-bold">售后情况: </span>{{record.afterSale}}</div>
+                <div class="mb-2 d-flex justify-space-between align-center"
+                  style="margin-left:-10px;padding-right:10px;">
+                  <span class="grey--text text--darken-2 text-subtitle-1 font-weight-bold">{{record.createTime}}</span>
+                  <span class="blue--text text-body-2 font-weight-bold"
+                    @click="onShowAddClick(record)">编辑</span>
+                </div>
+                <v-card class="pa-2 "
+                  style="margin-left:-10px;">
+                  <div v-for="(item,index) of recordItemList"
+                    v-show="record[item.key]"
+                    :key="index"><span class="grey--text text--darken-3 font-weight-bold">{{item.label}}: </span>{{record[item.key]}}
+                    <span v-if="item.key==='expense'">元</span>
+                  </div>
                 </v-card>
               </v-timeline-item>
             </v-timeline>
           </v-tab-item>
         </v-tabs-items>
-        <v-btn class="cost__add"
+        <v-btn v-show="currentTab==='cost'"
+          class="cost__add"
           color="blue accent-3"
           fab
           absolute
-          @click="onShowAddClick">
+          @click="onShowAddClick()">
           <v-icon color="white">add</v-icon>
         </v-btn>
       </div>
     </div>
     <create-cost-dialog :visible.sync="costDialogVisible"
-      :customerId="$route.params.customerId"></create-cost-dialog>
+      :customerId="$route.params.customerId"
+      :recordInfo="currentRecordInfo"
+      @operate="reFindRecordList"></create-cost-dialog>
   </div>
 </template>
 <script lang="ts">
@@ -126,8 +163,8 @@ interface CustomerInfo {
 }
 
 interface RecordInfo {
-  id: string
-  color: string
+  id?: string
+  color?: string
 }
 @Component({
   components: {createCostDialog: () => import('./createCostDialog.vue')}
@@ -145,7 +182,7 @@ export default class CustomerDetail extends Vue {
     {value: 'other', label: '其他信息'},
     {value: 'cost', label: '消费记录'}
   ]
-  currentTab = 'cost'
+  currentTab = 'base'
   colorList = [
     'red',
     'brown',
@@ -158,15 +195,50 @@ export default class CustomerDetail extends Vue {
     'teal'
   ]
   recordList: RecordInfo[] = []
+  recordItemList = [
+    {label: '消费金额', key: 'expense'},
+    {label: '购买产品及赠品', key: 'product'},
+    {label: '售后情况', key: 'afterSale'}
+  ]
+  currentRecordInfo: RecordInfo = {}
   page = {index: 1, total: 0, size: 30}
   costDialogVisible = false
 
   get surname() {
     return this.customerInfo.customerName.slice(0, 1)
   }
+  onPushEditClick() {
+    sessionStorage.setItem(
+      'editCustomerInfo',
+      JSON.stringify(this.customerInfo)
+    )
+    this.$router.push({name: 'createCustomer', query: {edit: '1'}})
+  }
 
-  onShowAddClick() {
+  async onDelCustomerClick() {
+    const flag = await this.$confirm('确认删除该客户？', {
+      title: '操作',
+      buttonTrueText: '确定',
+      buttonTrueColor: 'red',
+      buttonFalseText: '取消',
+      color: 'red'
+    })
+    console.log('删除判断', flag)
+
+    // flag && this.reDelCustomerInfo()
+  }
+
+  onShowAddClick(record?: RecordInfo) {
+    this.currentRecordInfo = record || {}
     this.costDialogVisible = true
+  }
+
+  async reDelCustomerInfo() {
+    await this.$callApi({
+      api: '/customer/delete',
+      param: {customerId: this.$route.params.customerId},
+      config: {method: 'DELETE'}
+    })
   }
 
   async reFindRecordList() {
@@ -178,18 +250,13 @@ export default class CustomerDetail extends Vue {
         customerId: this.$route.params.customerId
       }
     })
-    let tempList = []
-    tempList = [...list, ...list]
-    tempList = JSON.parse(JSON.stringify([...tempList, ...tempList]))
-    tempList = (tempList as RecordInfo[]).map((item, index) => {
-      console.log('看看', index % (this.colorList.length - 1))
-      item.id = index + item.id
+    this.recordList = (list as RecordInfo[]).map((item, index) => {
       item.color = this.colorList[index % (this.colorList.length - 1)]
       return item
     })
-    this.recordList = tempList
     this.page.total = total
   }
+
   async reFindCustomerDetail() {
     this.customerInfo = await this.$callApi({
       api: '/customer/detail',
@@ -206,6 +273,12 @@ export default class CustomerDetail extends Vue {
 
 <style lang="scss" scoped>
 .detail {
+  position: relative;
+  .detail__edit {
+    z-index: 3;
+    right: 8px;
+    top: 8px;
+  }
   .detail__avatar {
     // margin-top: -32px;
     position: absolute;
@@ -220,6 +293,7 @@ export default class CustomerDetail extends Vue {
     top: 30vh;
     height: calc(100% - 30vh);
     overflow: hidden;
+
     .other__gender {
       width: 40px;
     }
@@ -228,10 +302,12 @@ export default class CustomerDetail extends Vue {
     }
     .body__tabs {
       width: 100%;
+
       overflow: hidden;
       position: relative;
       .tabs__item {
         height: calc(100% - 56px);
+        overflow: hidden;
         ::v-deep .v-window__container {
           height: 100%;
           overflow: auto;
@@ -244,8 +320,8 @@ export default class CustomerDetail extends Vue {
           border-bottom: 1px solid rgba(229, 229, 229, 0.75);
         }
         .cell__label {
-          width: 81px;
-          text-align: right;
+          width: 82px;
+          // text-align: right;
         }
       }
 

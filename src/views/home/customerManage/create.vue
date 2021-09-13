@@ -154,7 +154,8 @@
       </v-card>
       <v-card class="mx-auto my-4">
         <v-card-subtitle>皮肤描述</v-card-subtitle>
-        <v-textarea placeholder="请输入"
+        <v-textarea v-model="form.skinDescription"
+          placeholder="请输入"
           hide-details
           flat
           solo></v-textarea>
@@ -191,6 +192,7 @@ export default class CreateCustomer extends Vue {
     gender: 1,
     skinType: '',
     skinCondition: '',
+    skinDescription: '',
     birthDay: ''
   }
   isShowDate = false
@@ -223,10 +225,27 @@ export default class CreateCustomer extends Vue {
       config: {method: 'POST'}
     })
     this.saving = false
+    this.$message.success('保存成功！')
+    this.$router.go(-1)
+  }
+
+  async initData() {
+    await this.reFindSkinInfoList()
+    if (this.$route.query.edit) {
+      const infoJson = sessionStorage.getItem('editCustomerInfo')
+      const info = JSON.parse(infoJson!)
+      info.skinType = info.skinType.code
+      info.skinCondition = info.skinCondition.code
+      info && (this.form = info)
+    }
   }
 
   mounted() {
-    this.reFindSkinInfoList()
+    this.initData()
+  }
+
+  destroyed() {
+    this.$route.query.edit && sessionStorage.removeItem('editCustomerInfo')
   }
 }
 </script>

@@ -96,6 +96,7 @@ export default class CustomerManage extends Vue {
 
   onSearchChange() {
     this.page.index = 1
+    this.customerList = []
     this.reFindCustomerList()
   }
 
