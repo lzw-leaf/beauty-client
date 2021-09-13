@@ -34,6 +34,7 @@
           type="number"
           v-model="form.age"
           placeholder="请填写"
+          pattern="[0-9]*"
           solo
           flat
           filled
@@ -46,6 +47,7 @@
           type="number"
           v-model="form.phoneNum"
           placeholder="请填写"
+          pattern="[0-9]*"
           solo
           flat
           filled

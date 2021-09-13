@@ -13,6 +13,7 @@
         <v-card class="form__card mx-auto">
           <v-text-field class="form__cell"
             type="number"
+            pattern="[0-9]*"
             v-model="form.expense"
             placeholder="请填写"
             solo

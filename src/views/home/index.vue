@@ -3,7 +3,8 @@
     <v-main class="home__main fill-height">
       <router-view></router-view>
     </v-main>
-    <v-bottom-navigation v-model="currentTab"
+    <v-bottom-navigation class="home__bar"
+      v-model="currentTab"
       :background-color="currentTabColor"
       dark
       shift
@@ -67,7 +68,9 @@ export default class Home extends Vue {
 
 <style lang="scss" scoped>
 .home {
-  &__main {
+  &__bar {
+    // bottom: constant(safe-area-inset-bottom);
+    // bottom: env(safe-area-inset-bottom);
   }
 }
 </style>

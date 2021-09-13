@@ -3,7 +3,7 @@
     <v-img class="login__banner"
       position="center bottom"
       max-height="50vh"
-      src="~@/assets/login/prospect.svg">
+      src="/img/prospect.svg">
     </v-img>
     <div class="login__slogan white--text text-h4 font-weight-bold">Welcome Back</div>
     <v-form ref="loginForm"
@@ -23,7 +23,8 @@
         :rules="passwordRules"
         type="password"
         label="Password"
-        required></v-text-field>
+        required
+        @keydown.enter="onSignClick"></v-text-field>
     </v-form>
     <div class="login__active font-weight-black px-10 mt-2 text-h5 d-flex align-center justify-space-between">
       <span>Sign in</span>
@@ -98,10 +99,7 @@ export default class Login extends Vue {
   }
   &__footer {
     width: 100%;
-    position: fixed;
-    bottom: 5vh + constant(safe-area-inset-bottom);
-    bottom: 5vh + env(safe-area-inset-bottom);
-    bottom: 5vh;
+    margin-top: 10vh;
   }
 }
 </style>
