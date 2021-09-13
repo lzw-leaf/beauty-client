@@ -14,7 +14,7 @@ module.exports = {
     iconPaths: {
       favicon32: 'img/logo.svg',
       favicon16: 'img/logo.svg',
-      appleTouchIcon: 'img/logo.svg',
+      appleTouchIcon: 'img/logo.png',
       maskIcon: 'img/logo.svg',
       msTileImage: 'img/logo.svg'
     }
