@@ -12,11 +12,11 @@ module.exports = {
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',
     iconPaths: {
-      favicon32: 'img/logo.svg',
-      favicon16: 'img/logo.svg',
+      favicon32: 'img/logo.png',
+      favicon16: 'img/logo.png',
       appleTouchIcon: 'img/logo.png',
-      maskIcon: 'img/logo.svg',
-      msTileImage: 'img/logo.svg'
+      maskIcon: 'img/logo.png',
+      msTileImage: 'img/logo.png'
     }
   }
 }
