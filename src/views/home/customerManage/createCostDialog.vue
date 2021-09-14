@@ -1,20 +1,37 @@
 <template>
   <v-bottom-sheet v-model="visibleSync">
     <v-card class="white pa-4">
-      <v-btn class="create__del"
+      <v-btn v-if="isEdit"
+        class="create__del"
         text
         color="red"
         @click="onDelRecordClick">
         删除
       </v-btn>
-      <div class="text-h6 text-center pb-4">新增消费记录</div>
+      <div class="text-h6 text-center pb-4">{{isEdit?'修改':'新增'}}消费记录</div>
       <v-form class="create__form "
         ref="form">
         <v-card class="form__card mx-auto">
           <v-text-field class="form__cell"
             type="number"
             pattern="[0-9]*"
-            v-model="form.expense"
+            v-model="form.charge"
+            placeholder="请填写"
+            solo
+            flat
+            filled
+            hide-details>
+            <template #prepend-inner>
+              <div class="font-weight-bold">充值金额：</div>
+            </template>
+            <template #append>
+              <div class="font-weight-bold">元</div>
+            </template>
+          </v-text-field>
+          <v-text-field class="form__cell"
+            type="number"
+            pattern="[0-9]*"
+            v-model="form.consume"
             placeholder="请填写"
             solo
             flat
@@ -69,7 +86,8 @@ import {Component, Prop, PropSync, Vue, Watch} from 'vue-property-decorator'
 interface RecordInfo {
   id?: string
   color?: string
-  expense: number
+  charge: number
+  consume: number
   product: string
   afterSale: string
 }
@@ -78,8 +96,12 @@ export default class CreateCostDialog extends Vue {
   @PropSync('visible') visibleSync!: boolean
   @Prop({default: ''}) customerId!: string
   @Prop({default: () => ({})}) recordInfo!: RecordInfo
-  form: RecordInfo = {id: '', expense: 0, product: '', afterSale: ''}
+  form: RecordInfo = {id: '', charge: 0, consume: 0, product: '', afterSale: ''}
   saving = false
+
+  get isEdit() {
+    return !!Object.keys(this.recordInfo).length
+  }
 
   async onDelRecordClick() {
     const flag = await this.$confirm('确认删除该条记录？', {
@@ -94,8 +116,12 @@ export default class CreateCostDialog extends Vue {
 
   onSaveClick() {
     this.saving = true
-    this.form
-    this.reSaveRecordInfo()
+    const flag = Object.keys(this.form).some(
+      key => this.form[key as keyof RecordInfo]
+    )
+    flag
+      ? this.reSaveRecordInfo()
+      : this.$message.warning('至少填一项服务内容！') && (this.saving = false)
   }
   async reDelRecordInfo() {
     await this.$callApi({

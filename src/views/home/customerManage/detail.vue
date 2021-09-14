@@ -58,7 +58,14 @@
           v-model="currentTab">
           <v-tab-item class="fill-height"
             value="base">
-            <v-card class="tab__card mx-auto pa-4 mt-8"
+            <v-card class="tab__card mt-6 mx-auto pa-4 mt-8"
+              width="90vw">
+              <div class="d-flex align-center">
+                <div class="cell__label grey--text text--darken-2">账户余额：</div>
+                <div class="flex-grow-1 black-text font-weight-bold pl-2">{{customerInfo.balance||0}} 元</div>
+              </div>
+            </v-card>
+            <v-card class="tab__card mx-auto pa-4 my-6"
               width="90vw">
               <div class="card__cell d-flex align-center pb-3">
                 <div class="grey--text text--darken-2 cell__label">电话：</div>
@@ -73,7 +80,7 @@
                 <div class="flex-grow-1 black-text pl-2">{{customerInfo.address}}</div>
               </div>
             </v-card>
-            <v-card class="tab__card mt-6 mx-auto pa-4"
+            <v-card class="tab__card mx-auto pa-4"
               width="90vw">
               <div class="card__cell d-flex align-center pb-3">
                 <div class="cell__label grey--text text--darken-2">皮肤类型：</div>
@@ -129,7 +136,7 @@
                   <div v-for="(item,index) of recordItemList"
                     v-show="record[item.key]"
                     :key="index"><span class="grey--text text--darken-3 font-weight-bold">{{item.label}}: </span>{{record[item.key]}}
-                    <span v-if="item.key==='expense'">元</span>
+                    <span v-if="['consume','charge'].includes(item.key)">元</span>
                   </div>
                 </v-card>
               </v-timeline-item>
@@ -196,7 +203,8 @@ export default class CustomerDetail extends Vue {
   ]
   recordList: RecordInfo[] = []
   recordItemList = [
-    {label: '消费金额', key: 'expense'},
+    {label: '充值金额', key: 'charge'},
+    {label: '消费金额', key: 'consume'},
     {label: '购买产品及赠品', key: 'product'},
     {label: '售后情况', key: 'afterSale'}
   ]
