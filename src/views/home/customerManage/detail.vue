@@ -136,7 +136,8 @@
                   <div v-for="(item,index) of recordItemList"
                     v-show="record[item.key]"
                     :key="index"><span class="grey--text text--darken-3 font-weight-bold">{{item.label}}: </span>{{record[item.key]}}
-                    <span v-if="['consume','charge'].includes(item.key)">元</span>
+                    <span v-if="['discount'].includes(item.key)">折</span>
+                    <span v-else-if="['consume','charge'].includes(item.key)">元</span>
                   </div>
                 </v-card>
               </v-timeline-item>
@@ -203,9 +204,10 @@ export default class CustomerDetail extends Vue {
   ]
   recordList: RecordInfo[] = []
   recordItemList = [
-    {label: '充值金额', key: 'charge'},
     {label: '消费金额', key: 'consume'},
-    {label: '购买产品及赠品', key: 'product'},
+    {label: '产品折扣', key: 'discount'},
+    {label: '余额', key: 'balance'},
+    {label: '消费产品及项目', key: 'product'},
     {label: '售后情况', key: 'afterSale'}
   ]
   currentRecordInfo: RecordInfo = {}

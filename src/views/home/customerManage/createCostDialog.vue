@@ -47,7 +47,7 @@
           <v-text-field class="form__cell"
             type="number"
             pattern="[0-9]*"
-            v-model="form.discount"
+            v-model="form.balance"
             placeholder="请填写"
             solo
             flat
@@ -104,6 +104,7 @@ interface RecordInfo {
   color?: string
   consume: number
   discount: number
+  balance: number
   product: string
   afterSale: string
 }
@@ -117,6 +118,7 @@ export default class CreateCostDialog extends Vue {
     consume: 0,
     product: '',
     discount: 0,
+    balance: 0,
     afterSale: ''
   }
   saving = false
