@@ -15,22 +15,6 @@
           <v-text-field class="form__cell"
             type="number"
             pattern="[0-9]*"
-            v-model="form.charge"
-            placeholder="请填写"
-            solo
-            flat
-            filled
-            hide-details>
-            <template #prepend-inner>
-              <div class="font-weight-bold">充值金额：</div>
-            </template>
-            <template #append>
-              <div class="font-weight-bold">元</div>
-            </template>
-          </v-text-field>
-          <v-text-field class="form__cell"
-            type="number"
-            pattern="[0-9]*"
             v-model="form.consume"
             placeholder="请填写"
             solo
@@ -44,9 +28,41 @@
               <div class="font-weight-bold">元</div>
             </template>
           </v-text-field>
+          <v-text-field class="form__cell"
+            type="number"
+            pattern="[0-9]*"
+            v-model="form.discount"
+            placeholder="请填写"
+            solo
+            flat
+            filled
+            hide-details>
+            <template #prepend-inner>
+              <div class="font-weight-bold">产品折扣：</div>
+            </template>
+            <template #append>
+              <div class="font-weight-bold">折</div>
+            </template>
+          </v-text-field>
+          <v-text-field class="form__cell"
+            type="number"
+            pattern="[0-9]*"
+            v-model="form.discount"
+            placeholder="请填写"
+            solo
+            flat
+            filled
+            hide-details>
+            <template #prepend-inner>
+              <div class="font-weight-bold">余额：</div>
+            </template>
+            <template #append>
+              <div class="font-weight-bold">元</div>
+            </template>
+          </v-text-field>
         </v-card>
         <v-card class="form__card mx-auto my-4">
-          <v-card-subtitle class="font-weight-bold">购买产品及赠品</v-card-subtitle>
+          <v-card-subtitle class="font-weight-bold">消费产品及项目</v-card-subtitle>
           <v-textarea v-model="form.product"
             placeholder="请输入"
             rows="2"
@@ -86,8 +102,8 @@ import {Component, Prop, PropSync, Vue, Watch} from 'vue-property-decorator'
 interface RecordInfo {
   id?: string
   color?: string
-  charge: number
   consume: number
+  discount: number
   product: string
   afterSale: string
 }
@@ -96,7 +112,13 @@ export default class CreateCostDialog extends Vue {
   @PropSync('visible') visibleSync!: boolean
   @Prop({default: ''}) customerId!: string
   @Prop({default: () => ({})}) recordInfo!: RecordInfo
-  form: RecordInfo = {id: '', charge: 0, consume: 0, product: '', afterSale: ''}
+  form: RecordInfo = {
+    id: '',
+    consume: 0,
+    product: '',
+    discount: 0,
+    afterSale: ''
+  }
   saving = false
 
   get isEdit() {
@@ -121,7 +143,7 @@ export default class CreateCostDialog extends Vue {
     )
     flag
       ? this.reSaveRecordInfo()
-      : this.$message.warning('至少填一项服务内容！') && (this.saving = false)
+      : this.$message.warning('至少填一项消费内容！') && (this.saving = false)
   }
   async reDelRecordInfo() {
     await this.$callApi({

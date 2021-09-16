@@ -131,8 +131,8 @@
                   <span class="blue--text text-body-2 font-weight-bold"
                     @click="onShowAddClick(record)">编辑</span>
                 </div>
-                <v-card class="pa-2 "
-                  style="margin-left:-10px;">
+                <v-card class="pa-2"
+                  style="margin-left:-10px; box-shadow: 0px 0px 2px 0px #e5e5e5;">
                   <div v-for="(item,index) of recordItemList"
                     v-show="record[item.key]"
                     :key="index"><span class="grey--text text--darken-3 font-weight-bold">{{item.label}}: </span>{{record[item.key]}}
