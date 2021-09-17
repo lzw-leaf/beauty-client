@@ -1,10 +1,10 @@
 <template>
   <div class="customer-manage fill-height grey lighten-5">
-    <div class="manage__filter deep-purple px-4 py-3 black-text d-flex align-center">
+    <div class="manage__filter grey darken-1 px-4 py-3 black-text d-flex align-center">
       <v-text-field class="mt-0 pt-0"
         v-model="searchText"
         background-color="white"
-        color="deep-purple"
+        color="grey darken-1"
         placeholder="请输入客户姓名搜索"
         prepend-inner-icon="search"
         :hide-details="true"
@@ -32,7 +32,7 @@
             <div class="font-weight-black"> {{item.customerName}}</div>
             <v-btn class="px-0 font-weight-bold"
               text
-              color="deep-purple"
+              color="grey darken-1"
               @click="onDetailClick(item)">
               查看详情
             </v-btn>
@@ -60,7 +60,7 @@
     </v-virtual-scroll>
 
     <v-btn class="manage__add"
-      color="deep-purple"
+      color="grey darken-1"
       fab
       absolute
       @click="onPushAddClick">

@@ -116,7 +116,7 @@
           </template>
           <v-date-picker v-model="form.birthDay"
             no-title
-            color="deep-purple"
+            color="grey darken-1"
             :day-format="formatDay"
             @input="isShowDate = false"></v-date-picker>
         </v-menu>
@@ -166,7 +166,7 @@
         height="40"
         :loading="saving"
         :disabled="saving"
-        color="deep-purple white--text"
+        color="grey darken-1 white--text"
         fixed
         @click="onSaveClick">
         保存

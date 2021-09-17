@@ -5,7 +5,7 @@
     </v-main>
     <v-bottom-navigation class="home__bar"
       v-model="currentTab"
-      background-color="deep-purple"
+      background-color="grey"
       dark
       shift
       app

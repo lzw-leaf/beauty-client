@@ -1,9 +1,12 @@
 <template>
   <div class="detail fill-height">
-    <v-img class="detail__banner"
-      max-width="100%"
-      height="40vh"
-      src="~@/assets/home/banner.webp"></v-img>
+    <div class="detail__banner d-flex"
+      style="height:40vh">
+      <v-img style="margin-top:10%"
+        contain
+        height="50%"
+        src="~@/assets/home/huangtang.jpeg"></v-img>
+    </div>
     <v-menu bottom
       left>
       <template v-slot:activator="{ on, attrs }">
@@ -18,7 +21,7 @@
       </template>
       <v-list>
         <v-list-item @click="onPushEditClick">
-          <v-list-item-title class="deep-purple--text text--darken-1 font-weight-bold">修改资料</v-list-item-title>
+          <v-list-item-title class="grey-text darken-1--text font-weight-bold">修改资料</v-list-item-title>
         </v-list-item>
         <v-list-item @click="onDelCustomerClick">
           <v-list-item-title class="red--text font-weight-bold">删除</v-list-item-title>
@@ -27,7 +30,7 @@
     </v-menu>
 
     <v-avatar class="detail__avatar text-h5"
-      color="deep-purple white--text font-weight-bold"
+      color="grey darken-1 white--text font-weight-bold"
       size="64">
       {{surname}}
     </v-avatar>
@@ -36,21 +39,21 @@
 
       <div class="body__other d-flex text-center mt-2 text-caption">
         <template v-if="customerInfo.gender">
-          <div class="other__gender rounded-pill white--text pink">女</div>
+          <div class="other__gender rounded-pill white--text grey darken-1">女</div>
           <div v-if="customerInfo.age"
-            class="other__age ml-1 rounded-pill white--text pink">{{customerInfo.age}}岁</div>
+            class="other__age ml-1 rounded-pill white--text grey darken-1">{{customerInfo.age}}岁</div>
         </template>
         <template v-else>
-          <div class="other__gender rounded-pill white--text light-blue">男</div>
+          <div class="other__gender rounded-pill white--text grey darken-1">男</div>
           <div v-if="customerInfo.age"
-            class="other__age ml-1 rounded-pill white--text light-blue">{{customerInfo.age}}岁</div>
+            class="other__age ml-1 rounded-pill white--text grey darken-1">{{customerInfo.age}}岁</div>
         </template>
       </div>
       <div class="body__tabs flex-grow-1">
         <v-tabs class="mt-2"
           fixed-tabs
           v-model="currentTab"
-          color="deep-purple"
+          color="grey darken-1"
           centered>
           <v-tab v-for="tab of tabList"
             :key="tab.value"
@@ -61,13 +64,13 @@
           v-model="currentTab">
           <v-tab-item class="fill-height"
             value="base">
-            <v-card class="tab__card mt-6 mx-auto pa-4 mt-8"
+            <!-- <v-card class="tab__card mt-6 mx-auto pa-4 mt-8"
               width="90vw">
               <div class="d-flex align-center">
                 <div class="cell__label grey--text text--darken-2">账户余额：</div>
                 <div class="flex-grow-1 black-text font-weight-bold pl-2">{{customerInfo.balance||0}} 元</div>
               </div>
-            </v-card>
+            </v-card> -->
             <v-card class="tab__card mx-auto pa-4 my-6"
               width="90vw">
               <div class="card__cell d-flex align-center pb-3">
@@ -75,7 +78,7 @@
                 <div class="flex-grow-1 black-text font-weight-bold pl-2 flex-wrap">{{customerInfo.phoneNum}}</div>
                 <a :href="`tel:${customerInfo.phoneNum}`"
                   style="text-decoration: none;">
-                  <v-icon class="deep-purple--text">call</v-icon>
+                  <v-icon class="grey-text darken-1--text">call</v-icon>
                 </a>
               </div>
               <div class="d-flex align-center pt-3">
@@ -131,7 +134,7 @@
                 <div class="mb-2 d-flex justify-space-between align-center"
                   style="margin-left:-10px;padding-right:10px;">
                   <span class="grey--text text--darken-2 text-subtitle-1 font-weight-bold">{{record.createTime}}</span>
-                  <span class="deep-purple--text text-body-2 font-weight-bold"
+                  <span class="grey--text text--darken-2 text-body-2 font-weight-bold"
                     @click="onShowAddClick(record)">编辑</span>
                 </div>
                 <v-card class="pa-2"
@@ -149,7 +152,7 @@
         </v-tabs-items>
         <v-btn v-show="currentTab==='cost'"
           class="cost__add"
-          color="deep-purple"
+          color="grey darken-1"
           fab
           absolute
           @click="onShowAddClick()">
@@ -194,17 +197,7 @@ export default class CustomerDetail extends Vue {
     {value: 'cost', label: '消费记录'}
   ]
   currentTab = 'base'
-  colorList = [
-    'red',
-    'brown',
-    'purple',
-    'pink',
-    'blue',
-    'yellow',
-    'orange',
-    'light-blue',
-    'teal'
-  ]
+  colorList = ['grey darken-1']
   recordList: RecordInfo[] = []
   recordItemList = [
     {label: '消费金额', key: 'consume'},
@@ -263,8 +256,8 @@ export default class CustomerDetail extends Vue {
         customerId: this.$route.params.customerId
       }
     })
-    this.recordList = (list as RecordInfo[]).map((item, index) => {
-      item.color = this.colorList[index % (this.colorList.length - 1)]
+    this.recordList = (list as RecordInfo[]).map(item => {
+      item.color = 'grey darken-1'
       return item
     })
     this.page.total = total
