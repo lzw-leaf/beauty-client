@@ -5,7 +5,7 @@
     </v-main>
     <v-bottom-navigation class="home__bar"
       v-model="currentTab"
-      :background-color="currentTabColor"
+      background-color="deep-purple"
       dark
       shift
       app
@@ -39,27 +39,24 @@ export default class Home extends Vue {
     {
       label: '统计',
       icon: 'assessment',
-      value: 'statistics',
-      bgColor: 'deep-purple'
+      value: 'statistics'
     },
     {
       label: '客户管理',
       icon: 'people',
-      value: 'customerManage',
-      bgColor: 'blue accent-3'
+      value: 'customerManage'
     },
     {
       label: '消费管理',
       icon: 'credit_card',
-      value: 'costManage',
-      bgColor: 'pink lighten-2'
+      value: 'costManage'
     }
   ]
 
-  get currentTabColor() {
-    const tabInfo = this.tabList.find(item => item.value === this.currentTab)
-    return tabInfo ? tabInfo.bgColor : 'light-blue'
-  }
+  // get currentTabColor() {
+  //   const tabInfo = this.tabList.find(item => item.value === this.currentTab)
+  //   return tabInfo ? tabInfo.bgColor : 'light-blue'
+  // }
   onTabChange() {
     this.$router.push({name: this.currentTab})
   }

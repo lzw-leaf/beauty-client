@@ -83,7 +83,7 @@
           height="40"
           :loading="saving"
           :disabled="saving"
-          color="blue accent-3 white--text"
+          color="deep-purple white--text"
           @click="onSaveClick">
           保存
           <template v-slot:loader>

@@ -18,7 +18,7 @@
       </template>
       <v-list>
         <v-list-item @click="onPushEditClick">
-          <v-list-item-title class="blue--text text--darken-1 font-weight-bold">修改资料</v-list-item-title>
+          <v-list-item-title class="deep-purple--text text--darken-1 font-weight-bold">修改资料</v-list-item-title>
         </v-list-item>
         <v-list-item @click="onDelCustomerClick">
           <v-list-item-title class="red--text font-weight-bold">删除</v-list-item-title>
@@ -27,7 +27,7 @@
     </v-menu>
 
     <v-avatar class="detail__avatar text-h5"
-      color="primary white--text font-weight-bold"
+      color="deep-purple white--text font-weight-bold"
       size="64">
       {{surname}}
     </v-avatar>
@@ -37,17 +37,20 @@
       <div class="body__other d-flex text-center mt-2 text-caption">
         <template v-if="customerInfo.gender">
           <div class="other__gender rounded-pill white--text pink">女</div>
-          <div class="other__age ml-1 rounded-pill white--text pink">{{customerInfo.age}}岁</div>
+          <div v-if="customerInfo.age"
+            class="other__age ml-1 rounded-pill white--text pink">{{customerInfo.age}}岁</div>
         </template>
-        <template>
+        <template v-else>
           <div class="other__gender rounded-pill white--text light-blue">男</div>
-          <div class="other__age ml-1 rounded-pill white--text light-blue">{{customerInfo.age}}岁</div>
+          <div v-if="customerInfo.age"
+            class="other__age ml-1 rounded-pill white--text light-blue">{{customerInfo.age}}岁</div>
         </template>
       </div>
       <div class="body__tabs flex-grow-1">
         <v-tabs class="mt-2"
           fixed-tabs
           v-model="currentTab"
+          color="deep-purple"
           centered>
           <v-tab v-for="tab of tabList"
             :key="tab.value"
@@ -72,7 +75,7 @@
                 <div class="flex-grow-1 black-text font-weight-bold pl-2 flex-wrap">{{customerInfo.phoneNum}}</div>
                 <a :href="`tel:${customerInfo.phoneNum}`"
                   style="text-decoration: none;">
-                  <v-icon class="blue--text">call</v-icon>
+                  <v-icon class="deep-purple--text">call</v-icon>
                 </a>
               </div>
               <div class="d-flex align-center pt-3">
@@ -128,7 +131,7 @@
                 <div class="mb-2 d-flex justify-space-between align-center"
                   style="margin-left:-10px;padding-right:10px;">
                   <span class="grey--text text--darken-2 text-subtitle-1 font-weight-bold">{{record.createTime}}</span>
-                  <span class="blue--text text-body-2 font-weight-bold"
+                  <span class="deep-purple--text text-body-2 font-weight-bold"
                     @click="onShowAddClick(record)">编辑</span>
                 </div>
                 <v-card class="pa-2"
@@ -146,7 +149,7 @@
         </v-tabs-items>
         <v-btn v-show="currentTab==='cost'"
           class="cost__add"
-          color="blue accent-3"
+          color="deep-purple"
           fab
           absolute
           @click="onShowAddClick()">

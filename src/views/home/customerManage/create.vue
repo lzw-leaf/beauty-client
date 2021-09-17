@@ -20,9 +20,9 @@
         <div class="form__sex d-flex pa-4 justify-space-between">
           <div class="cell__label font-weight-bold">性别：</div>
           <v-btn-toggle v-model="form.gender"
-            active-class="white--text blue accent-3"
+            active-class="white--text purple lighten-4"
             background-color="white"
-            color="blue accent-3"
+            color="purple lighten-4"
             rounded
             borderless
             mandatory>
@@ -116,7 +116,7 @@
           </template>
           <v-date-picker v-model="form.birthDay"
             no-title
-            color="blue accent-3"
+            color="deep-purple"
             :day-format="formatDay"
             @input="isShowDate = false"></v-date-picker>
         </v-menu>
@@ -166,7 +166,7 @@
         height="40"
         :loading="saving"
         :disabled="saving"
-        color="blue accent-3 white--text"
+        color="deep-purple white--text"
         fixed
         @click="onSaveClick">
         保存
