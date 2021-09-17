@@ -64,13 +64,7 @@
           v-model="currentTab">
           <v-tab-item class="fill-height"
             value="base">
-            <!-- <v-card class="tab__card mt-6 mx-auto pa-4 mt-8"
-              width="90vw">
-              <div class="d-flex align-center">
-                <div class="cell__label grey--text text--darken-2">账户余额：</div>
-                <div class="flex-grow-1 black-text font-weight-bold pl-2">{{customerInfo.balance||0}} 元</div>
-              </div>
-            </v-card> -->
+
             <v-card class="tab__card mx-auto pa-4 my-6"
               width="90vw">
               <div class="card__cell d-flex align-center pb-3">
@@ -95,6 +89,13 @@
               <div class="d-flex align-center pt-3">
                 <div class="cell__label grey--text text--darken-2 text-subtitle-1">皮肤状态：</div>
                 <div class="flex-grow-1 black-text font-weight-bold  pl-2">{{customerInfo.skinCondition.title}}</div>
+              </div>
+            </v-card>
+            <v-card class="tab__card mt-6 mx-auto pa-4 mt-8"
+              width="90vw">
+              <div class="d-flex align-center">
+                <div class="cell__label grey--text text--darken-2">建档时间：</div>
+                <div class="flex-grow-1 black-text font-weight-bold pl-2">{{customerInfo.createTime}}</div>
               </div>
             </v-card>
           </v-tab-item>

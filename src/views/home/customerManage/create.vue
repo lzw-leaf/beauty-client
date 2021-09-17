@@ -20,9 +20,9 @@
         <div class="form__sex d-flex pa-4 justify-space-between">
           <div class="cell__label font-weight-bold">性别：</div>
           <v-btn-toggle v-model="form.gender"
-            active-class="white--text purple lighten-4"
+            active-class="white--text grey darken-1"
             background-color="white"
-            color="purple lighten-4"
+            color="grey"
             rounded
             borderless
             mandatory>
@@ -153,6 +153,34 @@
             <div class="cell__label font-weight-bold">过去使用品牌：</div>
           </template>
         </v-text-field>
+        <v-menu v-model="isShowCreateTimeDate"
+          :close-on-content-click="false"
+          :nudge-right="40"
+          transition="scale-transition"
+          offset-y
+          min-width="auto">
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field class="form__cell"
+              v-model="form.createTime"
+              solo
+              flat
+              filled
+              hide-details
+              readonly
+              placeholder="请选择"
+              v-bind="attrs"
+              v-on="on">
+              <template #prepend-inner>
+                <div class="cell__label font-weight-bold">建档时间：</div>
+              </template>
+            </v-text-field>
+          </template>
+          <v-date-picker v-model="form.createTime"
+            no-title
+            color="grey darken-1"
+            :day-format="formatDay"
+            @input="isShowCreateTimeDate = false"></v-date-picker>
+        </v-menu>
       </v-card>
       <v-card class="mx-auto my-4">
         <v-card-subtitle>皮肤描述</v-card-subtitle>
@@ -198,6 +226,7 @@ export default class CreateCustomer extends Vue {
     birthDay: ''
   }
   isShowDate = false
+  isShowCreateTimeDate = false
   requiredRules = [(v: any) => !!v]
   skinTypeList = []
   skinStateList = []
