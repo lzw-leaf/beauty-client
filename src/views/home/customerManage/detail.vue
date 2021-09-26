@@ -39,22 +39,26 @@
 
       <div class="body__other d-flex text-center mt-2 text-caption">
         <template v-if="customerInfo.gender">
-          <div class="other__gender rounded-pill white--text grey darken-1">女</div>
+          <div class="other__gender rounded-pill white--text grey darken-1"
+            style="height:20px;line-height:20px;">女</div>
           <div v-if="customerInfo.age"
             class="other__age ml-1 rounded-pill white--text grey darken-1">{{customerInfo.age}}岁</div>
         </template>
         <template v-else>
-          <div class="other__gender rounded-pill white--text grey darken-1">男</div>
+          <div class="other__gender rounded-pill white--text grey darken-1"
+            style="height:20px;line-height:20px;">男</div>
           <div v-if="customerInfo.age"
             class="other__age ml-1 rounded-pill white--text grey darken-1">{{customerInfo.age}}岁</div>
         </template>
       </div>
       <div class="body__tabs flex-grow-1">
-        <v-tabs class="mt-2"
+        <v-tabs class="mt-2 "
           fixed-tabs
           v-model="currentTab"
           color="grey darken-1"
-          centered>
+          :mobile-breakpoint="0"
+          centered
+          style="position: sticky;top: 0;z-index: 3;">
           <v-tab v-for="tab of tabList"
             :key="tab.value"
             :href="'#'+tab.value">{{tab.label}}</v-tab>
@@ -84,11 +88,14 @@
               width="90vw">
               <div class="card__cell d-flex align-center pb-3">
                 <div class="cell__label grey--text text--darken-2">皮肤类型：</div>
-                <div class="flex-grow-1 black-text font-weight-bold pl-2">{{customerInfo.skinType.title}}</div>
+                <div class="flex-grow-1 black-text font-weight-bold pl-2">{{customerInfo.skinType}}</div>
               </div>
               <div class="d-flex align-center pt-3">
                 <div class="cell__label grey--text text--darken-2 text-subtitle-1">皮肤状态：</div>
-                <div class="flex-grow-1 black-text font-weight-bold  pl-2">{{customerInfo.skinCondition.title}}</div>
+                <div class="flex-grow-1 black-text font-weight-bold pl-2"
+                  style="max-width: calc(100% - 82px);">
+                  {{ customerInfo.skinConditions?customerInfo.skinConditions.join():''}}
+                </div>
               </div>
             </v-card>
             <v-card class="tab__card mt-6 mx-auto pa-4 mt-8"
@@ -146,6 +153,11 @@
                     <span v-if="['discount'].includes(item.key)">折</span>
                     <span v-else-if="['consume','charge'].includes(item.key)">元</span>
                   </div>
+                  <v-checkbox v-model="record.customerCheck"
+                    :disabled="record.customerCheck"
+                    dense
+                    label="客户确认"
+                    @change="onCustomerCheckChange(record)"></v-checkbox>
                 </v-card>
               </v-timeline-item>
             </v-timeline>
@@ -180,6 +192,7 @@ interface CustomerInfo {
 interface RecordInfo {
   id?: string
   color?: string
+  customerCheck?: boolean
 }
 @Component({
   components: {createCostDialog: () => import('./createCostDialog.vue')}
@@ -221,7 +234,12 @@ export default class CustomerDetail extends Vue {
     )
     this.$router.push({name: 'createCustomer', query: {edit: '1'}})
   }
-
+  onCustomerCheckChange(record: RecordInfo) {
+    if (record.customerCheck) {
+      this.currentRecordInfo = record
+      this.reSaveCustomerCheck()
+    }
+  }
   async onDelCustomerClick() {
     const flag = await this.$confirm('确认删除该客户？', {
       title: '操作',
@@ -230,14 +248,23 @@ export default class CustomerDetail extends Vue {
       buttonFalseText: '取消',
       color: 'red'
     })
-    console.log('删除判断', flag)
-
-    // flag && this.reDelCustomerInfo()
+    flag && this.reDelCustomerInfo()
   }
 
   onShowAddClick(record?: RecordInfo) {
     this.currentRecordInfo = record || {}
     this.costDialogVisible = true
+  }
+
+  async reSaveCustomerCheck() {
+    await this.$callApi({
+      api: '/record/check',
+      param: {
+        id: this.currentRecordInfo.id,
+        customerCheck: this.currentRecordInfo.customerCheck
+      },
+      config: {method: 'POST'}
+    })
   }
 
   async reDelCustomerInfo() {
@@ -246,6 +273,7 @@ export default class CustomerDetail extends Vue {
       param: {customerId: this.$route.params.customerId},
       config: {method: 'DELETE'}
     })
+    this.$router.push({name: 'customerManage'})
   }
 
   async reFindRecordList() {
@@ -299,7 +327,7 @@ export default class CustomerDetail extends Vue {
     position: absolute;
     top: 30vh;
     height: calc(100% - 30vh);
-    overflow: hidden;
+    // overflow: hidden;
 
     .other__gender {
       width: 40px;
@@ -309,15 +337,13 @@ export default class CustomerDetail extends Vue {
     }
     .body__tabs {
       width: 100%;
-
-      overflow: hidden;
+      // overflow: hidden;
       position: relative;
       .tabs__item {
         height: calc(100% - 56px);
-        overflow: hidden;
         ::v-deep .v-window__container {
           height: 100%;
-          overflow: auto;
+          // overflow: scroll;
         }
         .tab__card {
           box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.04);

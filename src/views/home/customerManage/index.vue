@@ -40,7 +40,7 @@
           <v-card-text>
             <div class="d-flex justify-space-between">
               <div>
-                <span class="font-weight-medium grey-darken-4-text">皮肤检测：</span>{{item.skinCondition.title}}
+                <span class="font-weight-medium grey-darken-4-text">皮肤检测：</span>{{item.skinConditions?item.skinConditions[0]+(item.skinConditions&&item.skinConditions.length>1?'等':''):'无' }}
               </div>
               <div style="width:158px;">
                 <span class="font-weight-medium grey-darken-4-text">电话号码：</span>{{item.phoneNum}}
@@ -48,7 +48,7 @@
             </div>
             <div class="d-flex justify-space-between">
               <div>
-                <span class="font-weight-medium grey-darken-4-text">皮肤类型：</span>{{item.skinType.title}}
+                <span class="font-weight-medium grey-darken-4-text">皮肤类型：</span>{{item.skinType}}
               </div>
               <div style="width:158px;">
                 <span class="font-weight-medium grey-darken-4-text">建档时间：</span>{{item.createTime|formatDate}}

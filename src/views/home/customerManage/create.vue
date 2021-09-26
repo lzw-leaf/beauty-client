@@ -61,12 +61,13 @@
       </v-card>
       <v-card class="mx-auto my-4">
         <v-card-subtitle>皮肤信息</v-card-subtitle>
+
         <v-overflow-btn v-model="form.skinType"
           class="my-2 form__cell"
           :items="skinTypeList"
           placeholder="请选择"
           item-text="title"
-          item-value="code"
+          item-value="title"
           solo
           hide-details
           flat
@@ -75,12 +76,14 @@
             <div class="cell__label font-weight-bold ">皮肤类型：</div>
           </template>
         </v-overflow-btn>
-        <v-overflow-btn v-model="form.skinCondition"
-          class="my-2 form__cell"
+        <v-select class="form__cell skin-state"
+          v-model="form.skinConditions"
           :items="skinStateList"
           item-text="title"
-          item-value="code"
+          item-value="title"
           placeholder="请选择"
+          chips
+          multiple
           solo
           hide-details
           flat
@@ -88,7 +91,7 @@
           <template #prepend-inner>
             <div class="cell__label font-weight-bold ">皮肤状态：</div>
           </template>
-        </v-overflow-btn>
+        </v-select>
       </v-card>
       <v-card class="mx-auto my-4">
         <v-card-subtitle>其他信息</v-card-subtitle>
@@ -221,9 +224,10 @@ export default class CreateCustomer extends Vue {
     address: '',
     gender: 1,
     skinType: '',
-    skinCondition: '',
+    skinConditions: [],
     skinDescription: '',
-    birthDay: ''
+    birthDay: '',
+    createTime: ''
   }
   isShowDate = false
   isShowCreateTimeDate = false
@@ -234,6 +238,11 @@ export default class CreateCustomer extends Vue {
   onSaveClick() {
     this.saving = true
     console.log('保存')
+    if (this.form.createTime) {
+      this.form.createTime = dayjs(this.form.createTime).format(
+        'YYYY-MM-DD HH:mm:ss'
+      )
+    }
     this.reSaveCustomerInfo()
   }
 
@@ -265,8 +274,6 @@ export default class CreateCustomer extends Vue {
     if (this.$route.query.edit) {
       const infoJson = sessionStorage.getItem('editCustomerInfo')
       const info = JSON.parse(infoJson!)
-      info.skinType = info.skinType.code
-      info.skinCondition = info.skinCondition.code
       info && (this.form = info)
     }
   }
@@ -288,9 +295,20 @@ export default class CreateCustomer extends Vue {
   .create__form {
     .form__cell {
       color: #333;
+      &.skin-state {
+        ::v-deep {
+          .v-select__selections {
+            justify-content: flex-end;
+            input {
+              display: none;
+            }
+          }
+        }
+      }
       &.primary--text {
         color: #333 !important;
       }
+
       .cell__label {
         white-space: nowrap;
       }

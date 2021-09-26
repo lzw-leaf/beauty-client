@@ -171,7 +171,7 @@ export default class CreateCostDialog extends Vue {
 
   @Watch('visible', {immediate: true})
   onVisibleSyncChange(value: boolean) {
-    value && (this.form = this.recordInfo)
+    value && (this.form = JSON.parse(JSON.stringify(this.recordInfo)))
   }
 }
 </script>
